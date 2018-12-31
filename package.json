@@ -2,11 +2,14 @@
   "name": "file-difference",
   "version": "1.0.0",
   "description": "Compares two configuration files and shows a difference",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "jest",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build"
+  },
+  "bin": {
+    "index": "dist/bin/index.js"
   },
   "files": [
     "dist"
