@@ -9,7 +9,7 @@
     "prepublishOnly": "npm run build"
   },
   "bin": {
-    "index": "dist/bin/index.js"
+    "gendiff": "dist/bin/gendiff.js"
   },
   "files": [
     "dist"
@@ -44,5 +44,8 @@
     "eslint-plugin-import": "^2.14.0",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0"
+  },
+  "dependencies": {
+    "commander": "^2.19.0"
   }
 }
