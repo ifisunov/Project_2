@@ -16,3 +16,7 @@ lint:
 
 test:
 	jest
+
+watch:
+	jest --watch
+
