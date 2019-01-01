@@ -17,4 +17,7 @@ $ npm install -g file-difference
 $ gendiff
 ```
 
-[![asciicast](https://asciinema.org/a/OZHhsqK9D6vN7CaUen7Y8xUZo.svg)](https://asciinema.org/a/OZHhsqK9D6vN7CaUen7Y8xUZo)
+### Install and run
+[![asciicast](https://asciinema.org/a/cJKN6tX1tqXQEMdKTVBknynrH.svg)](https://asciinema.org/a/cJKN6tX1tqXQEMdKTVBknynrH)
+
+
