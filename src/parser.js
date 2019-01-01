@@ -3,6 +3,7 @@ import path from 'path';
 import program from 'commander';
 import yaml from 'js-yaml';
 
+// eslint-disable-next-line consistent-return
 export default (file) => {
   const ext = path.extname(file);
   if (ext === '.json') {
