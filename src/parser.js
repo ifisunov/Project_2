@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import program from 'commander';
 import yaml from 'js-yaml';
 
 export default (file) => {
@@ -7,7 +8,9 @@ export default (file) => {
   if (ext === '.json') {
     return JSON.parse(fs.readFileSync(file, 'utf-8'));
   } if (ext === '.yaml' || ext === '.yml') {
-    return yaml.safeLoad(fs.readFileSync(file, 'utf-8'), 'utf-8');
+    return yaml.safeLoad(fs.readFileSync(file, 'utf-8'));
   }
-  return undefined;
+  console.log('\nWrong file extansion.\n');
+  program.help();
+  process.exit();
 };
