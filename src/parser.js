@@ -2,8 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import yaml from 'js-yaml';
+// eslint-disable-next-line no-unused-vars
+import colors from 'colors';
 
-// eslint-disable-next-line consistent-return
 export default (file) => {
   const ext = path.extname(file);
   if (ext === '.json') {
@@ -11,7 +12,7 @@ export default (file) => {
   } if (ext === '.yaml' || ext === '.yml') {
     return yaml.safeLoad(fs.readFileSync(file, 'utf-8'));
   }
-  console.log('\nWrong file extansion.\n');
+  console.log('\nWrong file extansion.\n'.red.bold);
   program.help();
-  process.exit();
+  return undefined;
 };
