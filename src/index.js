@@ -1,10 +1,9 @@
 import _ from 'lodash';
-import parser from './parser';
-import render from './render';
+import { parser, getDataFromFile, render } from './utils';
 
 export default (beforeFile, afterFile) => {
-  const beforeObj = parser(beforeFile);
-  const afterObj = parser(afterFile);
+  const beforeObj = parser(getDataFromFile(beforeFile));
+  const afterObj = parser(getDataFromFile(afterFile));
   const unionArr = _.union(Object.keys(beforeObj), Object.keys(afterObj));
 
   const difference = `{\n${unionArr.map((item) => {
