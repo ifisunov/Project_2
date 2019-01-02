@@ -7,7 +7,7 @@
 
 
 
-## Compares two files and shows a difference
+## Cli util compares two files and shows a difference
 
 ### Install
 

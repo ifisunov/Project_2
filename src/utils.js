@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import yaml from 'js-yaml';
+import ini from 'ini';
 // eslint-disable-next-line no-unused-vars
 import colors from 'colors';
 
@@ -18,6 +19,12 @@ export const getDataFromFile = (file) => {
       format: 'YAML',
     };
   }
+  if (ext === '.ini') {
+    return {
+      data: fs.readFileSync(file, 'utf-8'),
+      format: 'INI',
+    };
+  }
   console.log('\nWrong file extension.\n'.red.bold);
   program.help();
   return undefined;
@@ -29,6 +36,8 @@ export const parser = (dataAndFormatObj) => {
     return JSON.parse(data);
   } if (format === 'YAML') {
     return yaml.safeLoad(data);
+  } if (format === 'INI') {
+    return ini.parse(data);
   }
   return undefined;
 };
