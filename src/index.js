@@ -1,22 +1,23 @@
 import _ from 'lodash';
-import { getDataFromFile } from './utils';
-import { parser, render } from './parsers';
+import { getDataFromFile, render } from './utils';
+import parse from './parsers';
 
-export default (beforeFile, afterFile) => {
-  const beforeObj = parser(getDataFromFile(beforeFile));
-  const afterObj = parser(getDataFromFile(afterFile));
-  const unionArr = _.union(Object.keys(beforeObj), Object.keys(afterObj));
+export default (fileBefore, fileAfter) => {
+  const objectFileBefore = parse(getDataFromFile(fileBefore));
+  const objectFileAfter = parse(getDataFromFile(fileAfter));
+  const unionKeysOfObjects = _.union(Object.keys(objectFileBefore), Object.keys(objectFileAfter));
 
-  const differenceArr = unionArr.map((item) => {
-    if (_.has(beforeObj, item) && !_.has(afterObj, item)) {
-      return render('deleted', item, beforeObj, afterObj);
-    } if (!_.has(beforeObj, item) && _.has(afterObj, item)) {
-      return render('added', item, beforeObj, afterObj);
-    } if (_.has(beforeObj, item) && _.has(afterObj, item) && beforeObj[item] === afterObj[item]) {
-      return render('unchanged', item, beforeObj, afterObj);
+  const differenceOfObjects = unionKeysOfObjects.map((key) => {
+    if (_.has(objectFileBefore, key) && !_.has(objectFileAfter, key)) {
+      return render('deleted', key, objectFileBefore, objectFileAfter);
+    } if (!_.has(objectFileBefore, key) && _.has(objectFileAfter, key)) {
+      return render('added', key, objectFileBefore, objectFileAfter);
+    } if (_.has(objectFileBefore, key) && _.has(objectFileAfter, key)
+      && objectFileBefore[key] === objectFileAfter[key]) {
+      return render('unchanged', key, objectFileBefore, objectFileAfter);
     }
-    return render('changed', item, beforeObj, afterObj);
+    return render('changed', key, objectFileBefore, objectFileAfter);
   });
-  const difference = `{\n${differenceArr.join('')}}`;
+  const difference = `{\n${differenceOfObjects.join('')}}`;
   return difference;
 };
