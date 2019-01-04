@@ -34,9 +34,9 @@ export const render = (flag, key, beforeObj, afterObj) => ({
 const renderKeyValue = (value, level) => {
   if (value instanceof Object) {
     const keys = Object.keys(value);
-    return keys.map((item) => {
-      const valueOfKey = value[item];
-      return `{\n${'    '.repeat(level)}        ${item}: ${valueOfKey}\n${'    '.repeat(level)}    }`;
+    return keys.map((key) => {
+      const valueOfKey = value[key];
+      return `{\n${'    '.repeat(level)}        ${key}: ${valueOfKey}\n${'    '.repeat(level)}    }`;
     });
   }
   return value;
@@ -45,22 +45,22 @@ const renderKeyValue = (value, level) => {
 /**
  * Render a difference AST
  * @param {Array} ast
- * @param {Number} level
+ * @param {Number} levelDepth
  */
-export const renderAST = (ast, level = 0) => {
+export const renderAST = (ast, levelDepth = 0) => {
   const res = ast.map((item) => {
     const key = Object.keys(item);
     const value = item[key];
     if (_.has(value, 'children')) {
-      return (`${'    '.repeat(level)}    ${key}: {\n${renderAST(value.children, level + 1)}${'    '.repeat(level)}    }\n`);
+      return (`${'    '.repeat(levelDepth)}    ${key}: {\n${renderAST(value.children, levelDepth + 1)}${'    '.repeat(levelDepth)}    }\n`);
     } if (value.flag === 'added') {
-      return (`${'    '.repeat(level)}  + ${key}: ${renderKeyValue(value.valueAfter, level)}\n`);
+      return (`${'    '.repeat(levelDepth)}  + ${key}: ${renderKeyValue(value.valueAfter, levelDepth)}\n`);
     } if (value.flag === 'deleted') {
-      return (`${'    '.repeat(level)}  - ${key}: ${renderKeyValue(value.valueBefore, level)}\n`);
+      return (`${'    '.repeat(levelDepth)}  - ${key}: ${renderKeyValue(value.valueBefore, levelDepth)}\n`);
     } if (value.flag === 'changed') {
-      return (`${'    '.repeat(level)}  - ${key}: ${renderKeyValue(value.valueBefore, level)}\n${'    '.repeat(level)}  + ${key}: ${renderKeyValue(value.valueAfter, level)}\n`);
+      return (`${'    '.repeat(levelDepth)}  - ${key}: ${renderKeyValue(value.valueBefore, levelDepth)}\n${'    '.repeat(levelDepth)}  + ${key}: ${renderKeyValue(value.valueAfter, levelDepth)}\n`);
     }
-    return (`${'    '.repeat(level)}    ${key}: ${renderKeyValue(value.valueBefore, level)}\n`);
+    return (`${'    '.repeat(levelDepth)}    ${key}: ${renderKeyValue(value.valueBefore, levelDepth)}\n`);
   }).join('');
   return res;
 };
