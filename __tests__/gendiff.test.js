@@ -18,27 +18,37 @@ const afterTreeFileINI = '__tests__/__fixtures__/aftertree.ini';
 
 const resultFile = '__tests__/__fixtures__/result.txt';
 const resultTreeFile = '__tests__/__fixtures__/resulttree.txt';
+const resultPlainFile = '__tests__/__fixtures__/resultplain.txt';
+const resultPlainTreeFile = '__tests__/__fixtures__/resultplaintree.txt';
 
 test('JSON', () => {
-  expect(genDiff(beforeFileJSON, afterFileJSON)).toBe(fs.readFileSync(resultFile, 'utf-8'));
+  expect(genDiff(beforeFileJSON, afterFileJSON, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
 });
 
 test('JSON Tree', () => {
-  expect(genDiff(beforeTreeFileJSON, afterTreeFileJSON)).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
+  expect(genDiff(beforeTreeFileJSON, afterTreeFileJSON, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
 });
 
 test('YAML', () => {
-  expect(genDiff(beforeFileYAML, afterFileYAML)).toBe(fs.readFileSync(resultFile, 'utf-8'));
+  expect(genDiff(beforeFileYAML, afterFileYAML, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
 });
 
 test('YAML Tree', () => {
-  expect(genDiff(beforeTreeFileYAML, afterTreeFileYAML)).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
+  expect(genDiff(beforeTreeFileYAML, afterTreeFileYAML, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
 });
 
 test('INI', () => {
-  expect(genDiff(beforeFileINI, afterFileINI)).toBe(fs.readFileSync(resultFile, 'utf-8'));
+  expect(genDiff(beforeFileINI, afterFileINI, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
 });
 
 test('INI Tree', () => {
-  expect(genDiff(beforeTreeFileINI, afterTreeFileINI)).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
+  expect(genDiff(beforeTreeFileINI, afterTreeFileINI, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
+});
+
+test('Plain', () => {
+  expect(genDiff(beforeFileINI, afterFileINI, 'plain')).toBe(fs.readFileSync(resultPlainFile, 'utf-8'));
+});
+
+test('Plain Tree', () => {
+  expect(genDiff(beforeTreeFileINI, afterTreeFileINI, 'plain')).toBe(fs.readFileSync(resultPlainTreeFile, 'utf-8'));
 });

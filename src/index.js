@@ -1,11 +1,10 @@
-import { getDataFromFile, renderAST } from './utils';
+import { getDataFromFile } from './utils';
 import parse from './parsers';
 import { makeDiffAST } from './diffAST';
+import { renderSelect } from './renders';
 
-export default (fileBefore, fileAfter) => {
+export default (fileBefore, fileAfter, type = 'ast') => {
   const configTreeBefore = parse(getDataFromFile(fileBefore));
   const configTreeAfter = parse(getDataFromFile(fileAfter));
-  const differenceOfObjects = renderAST(makeDiffAST(configTreeBefore, configTreeAfter));
-  const difference = `{\n${differenceOfObjects}}`;
-  return difference;
+  return renderSelect(makeDiffAST(configTreeBefore, configTreeAfter), type);
 };
