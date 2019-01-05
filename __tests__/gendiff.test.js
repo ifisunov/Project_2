@@ -21,34 +21,30 @@ const resultTreeFile = '__tests__/__fixtures__/resulttree.txt';
 const resultPlainFile = '__tests__/__fixtures__/resultplain.txt';
 const resultPlainTreeFile = '__tests__/__fixtures__/resultplaintree.txt';
 
-test('JSON', () => {
-  expect(genDiff(beforeFileJSON, afterFileJSON, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
+describe('AST test:', () => {
+  test.each`
+    before                | after                 | result
+    ${beforeFileJSON}     | ${afterFileJSON}      | ${resultFile}
+    ${beforeTreeFileJSON} | ${afterTreeFileJSON}  | ${resultTreeFile}
+    ${beforeFileYAML}     | ${afterFileYAML}      | ${resultFile}
+    ${beforeTreeFileYAML} | ${afterTreeFileYAML}  | ${resultTreeFile}
+    ${beforeFileINI}      | ${afterFileINI}       | ${resultFile}
+    ${beforeTreeFileINI}  | ${afterTreeFileINI}   | ${resultTreeFile}
+  `('Difference between: $before and $after', ({ before, after, result }) => {
+  expect(genDiff(before, after, 'ast')).toBe(fs.readFileSync(result, 'utf-8'));
+});
 });
 
-test('JSON Tree', () => {
-  expect(genDiff(beforeTreeFileJSON, afterTreeFileJSON, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
+describe('Plain AST test', () => {
+  test.each`
+    before                | after                 | result
+    ${beforeFileYAML}     | ${afterFileYAML}      | ${resultPlainFile}
+    ${beforeFileJSON}     | ${afterFileJSON}      | ${resultPlainFile}
+    ${beforeFileINI}      | ${afterFileINI}       | ${resultPlainFile}
+    ${beforeTreeFileINI}  | ${afterTreeFileINI}   | ${resultPlainTreeFile}
+    ${beforeTreeFileJSON} | ${afterTreeFileJSON}  | ${resultPlainTreeFile}
+    ${beforeTreeFileYAML} | ${afterTreeFileYAML}  | ${resultPlainTreeFile}
+  `('Difference between: $before and $after', ({ before, after, result }) => {
+  expect(genDiff(before, after, 'plain')).toBe(fs.readFileSync(result, 'utf-8'));
 });
-
-test('YAML', () => {
-  expect(genDiff(beforeFileYAML, afterFileYAML, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
-});
-
-test('YAML Tree', () => {
-  expect(genDiff(beforeTreeFileYAML, afterTreeFileYAML, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
-});
-
-test('INI', () => {
-  expect(genDiff(beforeFileINI, afterFileINI, 'ast')).toBe(fs.readFileSync(resultFile, 'utf-8'));
-});
-
-test('INI Tree', () => {
-  expect(genDiff(beforeTreeFileINI, afterTreeFileINI, 'ast')).toBe(fs.readFileSync(resultTreeFile, 'utf-8'));
-});
-
-test('Plain', () => {
-  expect(genDiff(beforeFileINI, afterFileINI, 'plain')).toBe(fs.readFileSync(resultPlainFile, 'utf-8'));
-});
-
-test('Plain Tree', () => {
-  expect(genDiff(beforeTreeFileINI, afterTreeFileINI, 'plain')).toBe(fs.readFileSync(resultPlainTreeFile, 'utf-8'));
 });
