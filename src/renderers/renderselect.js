@@ -6,6 +6,4 @@ const selectRenderType = {
   plain: plainRenderAST,
 };
 
-export default (ast, type) => {
-  return selectRenderType[type](ast);
-};
+export default (ast, type) => selectRenderType[type](ast);
