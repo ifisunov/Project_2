@@ -15,7 +15,7 @@ const makeDiffAST = (configTreeBefore, configTreeAfter) => {
     } if (_.has(configTreeBefore, item) && _.has(configTreeAfter, item)
       && configTreeBefore[item] instanceof Object
       && configTreeAfter[item] instanceof Object) {
-      return { key: item, type: 'children', children: makeDiffAST(configTreeBefore[item], configTreeAfter[item]) };
+      return { key: item, type: 'nested', children: makeDiffAST(configTreeBefore[item], configTreeAfter[item]) };
     } if (_.has(configTreeBefore, item) && _.has(configTreeAfter, item)
     && (configTreeBefore[item] === configTreeAfter[item])) {
       return {

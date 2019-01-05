@@ -10,7 +10,7 @@ const renderPlainKeyValue = (value) => {
 };
 
 const renderingNodeMap = {
-  children: (item, parent, iter) => iter(item.children, parent.concat(`${item.key}.`)),
+  nested: (item, parent, iter) => iter(item.children, parent.concat(`${item.key}.`)),
   added: (item, parent) => `Property '${parent}${item.key}' was added with value: ${renderPlainKeyValue(item.valueAfter)}`,
   deleted: (item, parent) => `Property '${parent}${item.key}' was deleted`,
   changed: (item, parent) => `Property '${parent}${item.key}' was updated from value ${renderPlainKeyValue(item.valueBefore)} to ${renderPlainKeyValue(item.valueAfter)}`,
@@ -23,8 +23,11 @@ const renderingNodeMap = {
  */
 export default (tree) => {
   const iterRender = (ast, parent = '') => {
-    const renderedPlainDifference = ast.map(item => renderingNodeMap[item.type](item, parent, iterRender)).filter(v => v).join('\n');
-    return renderedPlainDifference;
+    const renderedPlainDifference = ast.map((item) => {
+      const renderNodeFunction = renderingNodeMap[item.type];
+      return renderNodeFunction(item, parent, iterRender);
+    });
+    return renderedPlainDifference.filter(v => v).join('\n');
   };
   return iterRender(tree);
 };

@@ -1,14 +1,13 @@
 import YAML from 'js-yaml';
 import INI from 'ini';
 
+const parserSelectMap = {
+  '.json': JSON.parse,
+  '.yaml': YAML.safeLoad,
+  '.ini': INI.parse,
+};
+
 /**
  * Parse data to config tree object
  */
-export default (dataAndFormatObj) => {
-  const { data, format } = dataAndFormatObj;
-  return {
-    '.json': JSON.parse,
-    '.yaml': YAML.safeLoad,
-    '.ini': INI.parse,
-  }[format](data);
-};
+export default ({ data, format }) => parserSelectMap[format](data);

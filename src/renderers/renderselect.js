@@ -1,7 +1,11 @@
 import renderAST from './renderast';
 import plainRenderAST from './renderplain';
 
-export default (ast, type) => ({
+const selectRenderType = {
   ast: renderAST,
   plain: plainRenderAST,
-}[type](ast));
+};
+
+export default (ast, type) => {
+  return selectRenderType[type](ast);
+};

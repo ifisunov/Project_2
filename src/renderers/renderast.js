@@ -1,25 +1,28 @@
+// import _ from 'lodash';
 /**
  * Utility for rendering value of object
  * @param {*} value
  * @param {Number} level
  */
-const renderKeyValue = (value, level) => {
-  if (value instanceof Object) {
-    const keys = Object.keys(value);
-    return keys.map((key) => {
-      const valueOfKey = value[key];
-      return `{\n${'    '.repeat(level)}        ${key}: ${valueOfKey}\n${'    '.repeat(level)}    }`;
-    });
+const renderKeyValue = (value, levelDepth) => {
+  if (!(value instanceof Object)) {
+    return value;
   }
-  return value;
+  const keys = Object.keys(value);
+  return keys.map((key) => {
+    const valueOfKey = value[key];
+    return `{\n${'    '.repeat(levelDepth)}        ${key}: ${valueOfKey}\n${'    '.repeat(levelDepth)}    }`;
+  });
 };
 
+const renderLine = (item, levelDepth, value, type) => `\n${'    '.repeat(levelDepth)}  ${type} ${item.key}: ${renderKeyValue(value, levelDepth)}`;
+
 const renderingNodeMap = {
-  children: (item, levelDepth, iter) => `${'    '.repeat(levelDepth)}    ${item.key}: {\n${iter(item.children, levelDepth + 1)}${'    '.repeat(levelDepth)}    }\n`,
-  added: (item, levelDepth) => `${'    '.repeat(levelDepth)}  + ${item.key}: ${renderKeyValue(item.valueAfter, levelDepth)}\n`,
-  deleted: (item, levelDepth) => `${'    '.repeat(levelDepth)}  - ${item.key}: ${renderKeyValue(item.valueBefore, levelDepth)}\n`,
-  changed: (item, levelDepth) => `${'    '.repeat(levelDepth)}  - ${item.key}: ${renderKeyValue(item.valueBefore, levelDepth)}\n${'    '.repeat(levelDepth)}  + ${item.key}: ${renderKeyValue(item.valueAfter, levelDepth)}\n`,
-  unchanged: (item, levelDepth) => `${'    '.repeat(levelDepth)}    ${item.key}: ${renderKeyValue(item.valueBefore, levelDepth)}\n`,
+  nested: (item, levelDepth, iter) => ([`\n${'    '.repeat(levelDepth + 1)}${item.key}: {`, iter(item.children, levelDepth + 1), `\n${'    '.repeat(levelDepth + 1)}}`]).join(''),
+  added: (item, levelDepth) => renderLine(item, levelDepth, item.valueAfter, '+'),
+  deleted: (item, levelDepth) => renderLine(item, levelDepth, item.valueBefore, '-'),
+  changed: (item, levelDepth) => ([renderLine(item, levelDepth, item.valueBefore, '-'), renderLine(item, levelDepth, item.valueAfter, '+')]).join(''),
+  unchanged: (item, levelDepth) => renderLine(item, levelDepth, item.valueBefore, ' '),
 };
 
 /**
@@ -31,5 +34,5 @@ export default (tree) => {
     const renderedASTDifference = ast.map(item => renderingNodeMap[item.type](item, levelDepth, iterRender)).join('');
     return renderedASTDifference;
   };
-  return `{\n${iterRender(tree)}}`;
+  return `{${iterRender(tree)}\n}`;
 };
