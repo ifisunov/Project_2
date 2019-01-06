@@ -10,4 +10,4 @@ const parserSelectMap = {
 /**
  * Parse data to config tree object
  */
-export default (data, format) => parserSelectMap[format](data);
+export default (data, fileExtension) => parserSelectMap[fileExtension](data);

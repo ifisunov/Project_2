@@ -3,9 +3,9 @@ import parse from './parsers';
 import makeDiffAST from './diffAST';
 import renderSelect from './renderers';
 
-export default (firstConfigFile, secondConfigFile, format = 'ast') => {
-  const configTreeBefore = parse(getDataFromFile(firstConfigFile), getExtName(firstConfigFile));
-  const configTreeAfter = parse(getDataFromFile(secondConfigFile), getExtName(secondConfigFile));
+export default (pathToConfigFile1, pathToConfigFile2, format = 'ast') => {
+  const configTree1 = parse(getDataFromFile(pathToConfigFile1), getExtName(pathToConfigFile1));
+  const configTree2 = parse(getDataFromFile(pathToConfigFile2), getExtName(pathToConfigFile2));
 
-  return renderSelect(makeDiffAST(configTreeBefore, configTreeAfter), format);
+  return renderSelect(makeDiffAST(configTree1, configTree2), format);
 };
